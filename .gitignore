@@ -1,4 +1,4 @@
 .DS_Store
 .vscode/settings.json
 yelp_data/yelp_*.json
-
+yelp_data/*_out
