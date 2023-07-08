@@ -1,5 +1,6 @@
 .DS_Store
 .vscode/settings.json
 .ipynb_checkpoints
+yelp_data
 yelp_data/yelp_*.json
 yelp_data/*_out
