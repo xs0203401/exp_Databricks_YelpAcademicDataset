@@ -1,1 +1,4 @@
 .DS_Store
+.vscode/settings.json
+yelp_data/yelp_*.json
+
