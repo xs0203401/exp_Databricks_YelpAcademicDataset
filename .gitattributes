@@ -1,0 +1,16 @@
+yelp_data/* filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_checkin filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_tip filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_business filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_business.json filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_business_out filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_checkin.json filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_review filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_review.json filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_tip.json filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_user filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_tip_out filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_user.json filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_user_out filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_checkin_out filter=lfs diff=lfs merge=lfs -text
+yelp_data/yelp_academic_dataset_review_out filter=lfs diff=lfs merge=lfs -text
