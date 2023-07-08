@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %sh ls
+# MAGIC %sh ls -lah
 
 # COMMAND ----------
 
