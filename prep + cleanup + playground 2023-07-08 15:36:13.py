@@ -257,6 +257,17 @@ df_attributes_fl.display()
 
 # COMMAND ----------
 
+df_attributes_fl \
+    .withColumn('test', F.regexp_replace('attributes*1->Alcohol*2', 'u\'', '')) \
+    .withColumn('testt', F.regexp_replace('test', '\'', '')) \
+    .display()
+
+# COMMAND ----------
+
+
+
+# COMMAND ----------
+
 df['tip'] = spark.read.json('dbfs:/FileStore/yelp_dataset/yelp_academic_dataset_tip.json')
 display(df['tip'])
 
@@ -266,11 +277,36 @@ df['tip'].printSchema()
 
 # COMMAND ----------
 
-df['tip'] \
-    .withColumn("rn", F.row_number().over(W.Window.partitionBy([F.col('business_id'), F.col('user_id')]).orderBy(F.col('date')))) \
-    .withColumn("start_datetime", F.to_timestamp(F.col('date'))) \
-    .display()
+from datetime import datetime
+max_datetime = datetime(9999, 12, 31, 23, 59, 59)
 
 # COMMAND ----------
 
+df_tip = df['tip'] \
+    .withColumn("tip_row_num", F.row_number().over(W.Window.partitionBy([F.col('business_id'), F.col('user_id')]).orderBy(F.col('date')))) \
+    .withColumn("start_datetime", F.to_timestamp(F.col('date'))) \
+    .withColumn("end_datetime_stg", F.lead(F.col('start_datetime'), 1).over(W.Window.partitionBy([F.col('business_id'), F.col('user_id')]).orderBy(F.col('date'))) + F.expr('INTERVAL -1 seconds')) \
+    .withColumn("max_datetime", F.lit(max_datetime).cast(T.TimestampType())) \
+    .withColumn("end_datetime", F.when(F.isnull(F.col('end_datetime_stg')), F.col('max_datetime')).otherwise(F.col('end_datetime_stg'))) \
+    .withColumn("is_current", F.when(F.isnull(F.col('end_datetime_stg')), F.lit(True)).otherwise(F.lit(False))) \
+    .drop('end_datetime_stg', 'max_datetime') \
+    # .display()
+    
 
+# COMMAND ----------
+
+permanent_table_name = "df_tip"
+df_tip.write.format("parquet").saveAsTable(permanent_table_name)
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC drop table df_tip
+
+# COMMAND ----------
+
+df_tip.write.parquet(f'dbfs:/FileStore/tables/{permanent_table_name}')
+
+# COMMAND ----------
+
+display(dbutils.fs.ls('dbfs:/FileStore/tables/'))
