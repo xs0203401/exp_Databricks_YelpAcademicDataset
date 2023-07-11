@@ -53,6 +53,9 @@ file_local_path = "yelp_data_unzip/yelp_data"
 dbfs_file_path = "dbfs:/FileStore/yelp_data"
 dbutils.fs.mkdirs(dbfs_file_path)
 
+
+# COMMAND ----------
+
 dbutils.fs.cp(f"file:/databricks/driver/{file_local_path}", dbfs_file_path, recurse=True)
 
 # COMMAND ----------
@@ -130,11 +133,12 @@ df_tip_SCD2 = df['tip'] \
     .withColumn("is_current", F.when(F.isnull(F.col('end_datetime_stg')), F.lit(True)).otherwise(F.lit(False))) \
     .drop('end_datetime_stg', 'max_datetime')
 
-display(df_tip_SCD2)
+# display(df_tip_SCD2)
 
 # COMMAND ----------
 
 df['tip'] = df_tip_SCD2
+df['tip'].show()
 
 # COMMAND ----------
 
@@ -152,13 +156,12 @@ df['tip'] = df_tip_SCD2
 # COMMAND ----------
 
 df_business_cat_exploded = df['business'].select(['business_id', 'categories']).withColumn('category', F.explode(F.split(F.col('categories'), ',')))
-display(df_business_cat_exploded)
 
 # COMMAND ----------
 
 # Save 
 df['business_cat_exploded'] = df_business_cat_exploded
-display(df['business_cat_exploded'])
+df['business_cat_exploded'].show()
 
 # COMMAND ----------
 
@@ -243,7 +246,7 @@ df_business_attributes_flatten = flatten_json(df_business_attributes)
 
 # Save
 df['business_attributes_flatten'] = df_business_attributes_flatten
-display(df['business_attributes_flatten'])
+df['business_attributes_flatten'].show()
 
 # COMMAND ----------
 
@@ -254,7 +257,7 @@ display(df['business_attributes_flatten'])
 
 # Clean and save
 df['business'] = df['business'].drop('attributes', 'categories')
-display(df['business'])
+df['business'].show()
 
 # COMMAND ----------
 
@@ -268,11 +271,12 @@ display(df['business'])
 df_user_friends = df['user'].select(['user_id', 'friends'])
 df_user_friends = df_user_friends.withColumn("friend", F.split(F.col('friends'), ","))
 df['user_friends'] = df_user_friends
-display(df['user_friends'])
+
+df['user_friends'].show()
 
 # COMMAND ----------
 
-display(df['user'])
+df['user'].show()
 
 # COMMAND ----------
 
@@ -281,15 +285,15 @@ display(df['user'])
 
 # COMMAND ----------
 
-display(df['review'].select('business_id','review_id','user_id').count())
+df['review'].select('business_id','review_id','user_id').count()
 
 # COMMAND ----------
 
-display(df['review'].select('business_id','review_id','user_id').distinct().count())
+df['review'].select('business_id','review_id','user_id').distinct().count()
 
 # COMMAND ----------
 
-display(df['review'])
+df['review'].show()
 
 # COMMAND ----------
 
@@ -300,7 +304,7 @@ display(df['review'])
 
 df_checkin = df['checkin'].withColumn("last_date", F.element_at(F.split(F.col('date'), ','), -1))
 df['checkin'] = df_checkin
-display(df['checkin'])
+df['checkin'].show()
 
 # COMMAND ----------
 
@@ -321,10 +325,14 @@ print(df.keys())
 for df_name in df:
     print(f'------------------ [ df_{df_name} ] -----------------')
     persisted_file_path = f'dbfs:/FileStore/tables/yelp_PersistedParquet_{df_name}'
-    df[df_name].write.parquet(persisted_file_path)
+    df[df_name].write.mode("overwrite").parquet(persisted_file_path)
     print(f'---------- [ {persisted_file_path} ] ------------')
     df[df_name].show()
 
 # COMMAND ----------
 
 print("DONE")
+
+# COMMAND ----------
+
+
