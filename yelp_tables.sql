@@ -8,60 +8,60 @@ DROP TABLE IF EXISTS yelp_user;
 
 
 CREATE TABLE yelp_checkin (
-    business_id NVARCHAR(MAX),
+    business_id NVARCHAR(30),
     date NVARCHAR(MAX)
     , ingestUTC datetime
 );
 
 CREATE TABLE yelp_tip (
-    user_id NVARCHAR(MAX),
-    business_id NVARCHAR(MAX),
-    text NVARCHAR(MAX),
+    user_id NVARCHAR(30),
+    business_id NVARCHAR(30),
+    text NVARCHAR(500),
     date DATETIME,
     compliment_count INT
     , ingestUTC datetime
 );
 
 CREATE TABLE yelp_review (
-    review_id NVARCHAR(MAX),
-    user_id NVARCHAR(MAX),
-    business_id NVARCHAR(MAX),
+    review_id NVARCHAR(30),
+    user_id NVARCHAR(30),
+    business_id NVARCHAR(30),
     stars INT,
     useful INT,
     funny INT,
     cool INT,
-    text NVARCHAR(MAX),
+    text NVARCHAR(5000),
     date DATETIME
     , ingestUTC datetime
 );
 
 CREATE TABLE yelp_business (
-    business_id NVARCHAR(MAX),
-    name NVARCHAR(MAX),
-    address NVARCHAR(MAX),
-    city NVARCHAR(MAX),
-    state NVARCHAR(MAX),
-    postal_code NVARCHAR(MAX),
+    business_id NVARCHAR(30),
+    name NVARCHAR(100),
+    address NVARCHAR(200),
+    city NVARCHAR(100),
+    state NVARCHAR(10),
+    postal_code NVARCHAR(10),
     latitude FLOAT,
     longitude FLOAT,
     stars FLOAT,
     review_count INT,
     is_open INT,
-    attributes NVARCHAR(MAX),
-    categories NVARCHAR(MAX),
-    hours NVARCHAR(MAX)
+    attributes NVARCHAR(2000),
+    categories NVARCHAR(1000),
+    hours NVARCHAR(500)
     , ingestUTC datetime
 );
 
 CREATE TABLE yelp_user (
-    user_id NVARCHAR(MAX),
-    name NVARCHAR(MAX),
+    user_id NVARCHAR(30),
+    name NVARCHAR(50),
     review_count INT,
-    yelping_since NVARCHAR(MAX),
+    yelping_since NVARCHAR(30),
     useful INT,
     funny INT,
     cool INT,
-    elite NVARCHAR(MAX),
+    elite NVARCHAR(100),
     friends NVARCHAR(MAX),
     fans INT,
     average_stars FLOAT,
