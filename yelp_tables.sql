@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS yelp_user;
 
 
 CREATE TABLE yelp_checkin (
-    business_id NVARCHAR(30),
+    business_id NVARCHAR(30) PRIMARY KEY,
     date NVARCHAR(MAX)
     , ingestUTC datetime
 );
@@ -30,13 +30,13 @@ CREATE TABLE yelp_review (
     useful INT,
     funny INT,
     cool INT,
-    text NVARCHAR(5000),
+    text NVARCHAR(MAX),
     date DATETIME
     , ingestUTC datetime
 );
 
 CREATE TABLE yelp_business (
-    business_id NVARCHAR(30),
+    business_id NVARCHAR(30) PRIMARY KEY,
     name NVARCHAR(100),
     address NVARCHAR(200),
     city NVARCHAR(100),
@@ -54,7 +54,7 @@ CREATE TABLE yelp_business (
 );
 
 CREATE TABLE yelp_user (
-    user_id NVARCHAR(30),
+    user_id NVARCHAR(30) PRIMARY KEY,
     name NVARCHAR(50),
     review_count INT,
     yelping_since NVARCHAR(30),
