@@ -9,6 +9,24 @@ BEGIN
     DROP TABLE IF EXISTS stg_yelp_user;
 
 
+    CREATE TABLE stg_yelp_business (
+        business_id NVARCHAR(30) PRIMARY KEY,
+        name NVARCHAR(100),
+        address NVARCHAR(200),
+        city NVARCHAR(100),
+        state NVARCHAR(10),
+        postal_code NVARCHAR(10),
+        latitude FLOAT,
+        longitude FLOAT,
+        stars FLOAT,
+        review_count INT,
+        is_open INT,
+        attributes NVARCHAR(2000),
+        categories NVARCHAR(1000),
+        hours NVARCHAR(500)
+        , ingestUTC datetime
+    );
+
     CREATE TABLE stg_yelp_checkin (
         business_id NVARCHAR(30) PRIMARY KEY,
         date NVARCHAR(MAX)
@@ -34,24 +52,6 @@ BEGIN
         cool INT,
         text NVARCHAR(MAX),
         date DATETIME
-        , ingestUTC datetime
-    );
-
-    CREATE TABLE stg_yelp_business (
-        business_id NVARCHAR(30) PRIMARY KEY,
-        name NVARCHAR(100),
-        address NVARCHAR(200),
-        city NVARCHAR(100),
-        state NVARCHAR(10),
-        postal_code NVARCHAR(10),
-        latitude FLOAT,
-        longitude FLOAT,
-        stars FLOAT,
-        review_count INT,
-        is_open INT,
-        attributes NVARCHAR(2000),
-        categories NVARCHAR(1000),
-        hours NVARCHAR(500)
         , ingestUTC datetime
     );
 
