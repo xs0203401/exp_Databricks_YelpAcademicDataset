@@ -8,4 +8,6 @@ BEGIN
     TRUNCATE TABLE stg_yelp_business;
     TRUNCATE TABLE stg_yelp_user;
 
+    TRUNCATE TABLE [dbo].[delta_bronze_table];
+
 END
