@@ -128,7 +128,7 @@ BEGIN
     -- Deleted (Missing Rows)
     UPDATE st
     SET 
-        st.end_date = bsp.utc,
+        st.end_date = GETDATE(),
         st.is_current = 0
     FROM 
         delta_silver_table st
@@ -154,7 +154,7 @@ BEGIN
     -- Matching Rows
     UPDATE st
     SET
-        st.end_date = bsp.utc
+        st.end_date = bsp.ingestUTC
     FROM 
         delta_silver_table st
         LEFT JOIN #BronzeSilverPrep bsp
@@ -177,56 +177,56 @@ BEGIN
 
     -- New Rows
     SELECT
-        st.source_table_name,
-        st.review_id,
-        st.user_id,
-        st.business_id,
-        st.stars,
-        st.useful,
-        st.funny,
-        st.cool,
-        st.[text],
-        st.[date],
-        st.[name],
-        st.[address],
-        st.city,
-        st.[state],
-        st.postal_code,
-        st.latitude,
-        st.longitude,
-        st.business_stars,
-        st.review_count,
-        st.is_open,
-        st.attributes,
-        st.categories,
-        st.[hours],
-        st.checkin_date,
-        st.compliment_count,
-        st.yelping_since,
-        st.elite,
-        st.friends,
-        st.fans,
-        st.average_stars,
-        st.compliment_hot,
-        st.compliment_more,
-        st.compliment_profile,
-        st.compliment_cute,
-        st.compliment_list,
-        st.compliment_note,
-        st.compliment_plain,
-        st.compliment_cool,
-        st.compliment_funny,
-        st.compliment_writer,
-        st.compliment_photos,
-        st.ingestUTC,
-        st.CHECKSUM_key,
-        [start_date] = st.ingestUTC,
+        bsp.source_table_name,
+        bsp.review_id,
+        bsp.user_id,
+        bsp.business_id,
+        bsp.stars,
+        bsp.useful,
+        bsp.funny,
+        bsp.cool,
+        bsp.[text],
+        bsp.[date],
+        bsp.[name],
+        bsp.[address],
+        bsp.city,
+        bsp.[state],
+        bsp.postal_code,
+        bsp.latitude,
+        bsp.longitude,
+        bsp.business_stars,
+        bsp.review_count,
+        bsp.is_open,
+        bsp.attributes,
+        bsp.categories,
+        bsp.[hours],
+        bsp.checkin_date,
+        bsp.compliment_count,
+        bsp.yelping_since,
+        bsp.elite,
+        bsp.friends,
+        bsp.fans,
+        bsp.average_stars,
+        bsp.compliment_hot,
+        bsp.compliment_more,
+        bsp.compliment_profile,
+        bsp.compliment_cute,
+        bsp.compliment_list,
+        bsp.compliment_note,
+        bsp.compliment_plain,
+        bsp.compliment_cool,
+        bsp.compliment_funny,
+        bsp.compliment_writer,
+        bsp.compliment_photos,
+        bsp.ingestUTC,
+        bsp.CHECKSUM_key,
+        [start_date] = bsp.ingestUTC,
         end_date = NULL,
         is_current = 1
     INTO #NewSilverTableRows
     FROM 
         delta_silver_table st
-        LEFT JOIN #BronzeSilverPrep bsp
+        RIGHT JOIN #BronzeSilverPrep bsp
         on 
             st.is_current = 1
             AND CONCAT(
